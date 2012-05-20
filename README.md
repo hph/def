@@ -18,6 +18,7 @@ Usage
 ```bash
 def word
 
+
         Word
     Noun
       • A single distinct meaningful element of speech or writing, used with
