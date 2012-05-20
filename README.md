@@ -12,6 +12,7 @@ mv def/ ~/.def
 chmod +x ~/.def
 sudo ln -s ~/.def/define.py /usr/bin/def
 
+
 Usage
 -----
 
