@@ -10,7 +10,7 @@ Open a terminal window and paste the following commands into it:
 
     git clone git://github.com/haukurpallh/def.git
     mv def/ ~/.def
-    chmod +x ~/.def
+    chmod +x ~/.def/define.py
     sudo ln -s ~/.def/define.py /usr/bin/def
 
 
