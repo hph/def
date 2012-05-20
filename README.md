@@ -1,6 +1,7 @@
 def
 ===
-A commandl-line dictionary using Google Dictionary's definitions.
+A commandl-line dictionary using Google Dictionary's definitions and
+(unofficial) JSON API.
 
 Setup
 -----
@@ -34,4 +35,3 @@ Which prints:
       • Choose and use particular words in order to say or write (something).
     Exclamation
       • Used to express agreement.
-
