@@ -5,6 +5,7 @@ A commandl-line dictionary using Google Dictionary's definitions.
 Setup
 -----
 ### Manual install (Linux)
+Open a terminal window and paste the following commands into it:
 
     git clone git://github.com/haukurpallh/def.git
     mv def/ ~/.def
@@ -14,6 +15,7 @@ Setup
 
 Usage
 -----
+Open a terminal and type the `def` command as such:
 
     def word
 
