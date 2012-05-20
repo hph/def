@@ -1,7 +1,7 @@
 def
 ===
-A commandl-line dictionary using Google Dictionary's definitions and
-(unofficial) JSON API.
+A dictionary look-up program with a command-line interface using Google
+Dictionary's definitions and (unofficial) JSON API.
 
 Setup
 -----
