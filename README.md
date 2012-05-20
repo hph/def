@@ -17,6 +17,7 @@ Usage
 
     def word
 
+Which prints:
 
         Word
     Noun
