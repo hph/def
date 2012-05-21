@@ -1,8 +1,10 @@
 #!/usr/bin/python
 #coding: utf8
 
+from __future__ import division
 from argparse import ArgumentParser
 from ast import literal_eval
+from math import ceil
 from os import popen
 from re import sub
 from string import capitalize
@@ -50,17 +52,42 @@ def parse(data, query, quiet=False):
         exit(1)
     return zip(categories, definitions)
 
-def format_output(input, limit):
+def format(string, width, indentation=4, bullet='  • '):
+    '''Parse string and adjust indentation.'''
+    indentation *= ' '
+    lines = list()
+    line_length = width - len(indentation)
+    num_lines = int(ceil(len(string) / line_length))
+    words = string.split()
+    line = words[0]
+    index = 0 
+    for i in xrange(num_lines):
+        for j, word in enumerate(words[(index + 1):], index + 1):
+            temp_line = line
+            line += ' ' + word
+            if len(line) > line_length:
+                line = temp_line
+                index = j
+                break
+        lines.append(indentation + line)
+        line = words[index]
+    lines[0] = bullet + lines[0][4:]
+    return lines
+
+def format_output(input, limit, indentation=4):
     '''Parse and print input list in a specific manner. Only return limit
     number of definitions.'''
-    # cols = int(popen('stty size', 'r').read().split()[1])
-    # NOTE Adjust text if longer than one line (number of columns) so that the
-    # output is more readable.
-    print '    %s' % capitalize(input[0])
+    cols = int(popen('stty size', 'r').read().split()[1])
+    # TODO Retrieve the words from JSON. Reason: currently word -> Word,
+    # regardless of the category; if it is an acronym it should be word ->
+    # WORD.
+    print indentation * ' ' + capitalize(input[0])
     for category in input[1]:
         print category[0]
         for definition in category[1][:limit]:
-            print '  • %s.' % untag(definition)
+            for line in format(untag(definition), cols):
+                print line
+        # TODO Add examples.
 
 def untag(string):
     '''Remove XML tags from string.'''
