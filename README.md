@@ -5,22 +5,17 @@ A dictionary with a command-line interface using Google Dictionary's
 
 Setup
 -----
-### Manual install (Linux)
-Open a terminal window and paste the following commands into it:
+### Manual install (Linux & Mac)
+Open a terminal and paste the following commands into it:
 
     git clone git://github.com/haukurpallh/def.git
     mv def/ ~/.def
     chmod +x ~/.def/define.py
     sudo ln -s ~/.def/define.py /usr/bin/def
 
-
 Usage
 -----
-Open a terminal and type the `def` command as such:
-
-    def word
-
-Which prints:
+Open a terminal and type `def word`. It should print the following:
 
         Word
     Noun
@@ -35,3 +30,5 @@ Which prints:
       • Choose and use particular words in order to say or write (something).
     Exclamation
       • Used to express agreement.
+
+For help you can type `def -h`.
