@@ -25,7 +25,7 @@ def get_data(query, src_lan='en', tgt_lan='en', quiet=False):
                 print 'You appear to be connected to the internet. Try again.'
             else:
                 print 'You appear to be disconnected from the internet.'
-        exit()
+        exit(1)
 
 def parse(data, query, quiet=False):
     '''Return a dictionary containing definitions and their categories parsed
@@ -47,7 +47,7 @@ def parse(data, query, quiet=False):
     except KeyError:
         if not quiet:
             print 'No definition found for "%s".' % query
-        exit()
+        exit(1)
     return zip(categories, definitions)
 
 def format_output(input, limit):
