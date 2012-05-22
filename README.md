@@ -149,5 +149,5 @@ Future features
 
 Notes
 -----
-Don't hesitate to report bugs at the
+Don't hesitate to report bugs on the
 [issues page](https://github.com/haukurpallh/def/issues).
