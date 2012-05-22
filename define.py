@@ -11,6 +11,7 @@ from string import capitalize
 from sys import argv, exit
 from urllib import urlencode
 from urllib2 import urlopen, URLError
+from webbrowser import open as open_browser
 
 def get_data(query, src_lan='en', tgt_lan='en', quiet=False):
     '''Return data in JSON from Google.''' 
@@ -23,9 +24,10 @@ def get_data(query, src_lan='en', tgt_lan='en', quiet=False):
             print 'Error - could not connect to Google.com'
             print 'Checking internet connectivity.'
             if connected():
-                print 'You appear to be connected to the internet. Try again.'
+                print 'You appear to be connected to the internet.'
             else:
                 print 'You appear to be disconnected from the internet.'
+            bug_report()
         exit(1)
 
 def parse(data, query, quiet=False):
@@ -35,25 +37,34 @@ def parse(data, query, quiet=False):
         dicts = literal_eval(data)['primaries']
         categories = []
         definitions = []
+        category = '    ―'
+        syllables = ''
+        phonetic = ''
         for i, _ in enumerate(dicts):
-            category = dicts[i]['terms'][0]['labels'][0]['text']
+            if dicts[i]['terms'][0].has_key('labels'):
+                category = dicts[i]['terms'][0]['labels'][0]['text']
             categories.append(category)
+            syllables = dicts[i]['terms'][0]['text']
+            if dicts[i]['terms'][1]['type'] == 'phonetic':
+                phonetic = dicts[i]['terms'][1]['text']
             definition = dicts[i]['entries']
             temp_defs = []
             for i, _ in enumerate(definition):
-                if definition[i].has_key('type'):
-                    if definition[i]['type'] == 'meaning':
-                        temp_defs.append(definition[i]['terms'][0]['text'])
+                if definition[i]['type'] == 'meaning':
+                    temp_defs.append(definition[i]['terms'][0]['text'])
             definitions.append(temp_defs)
+        names = syllables, phonetic
     except KeyError:
         if not quiet:
             print 'No definition found for "%s".' % query
+            bug_report()    
         exit(1)
-    return zip(categories, definitions)
+    return zip(categories, definitions), names
 
-def format_indentation(string, width, indentation=4, bullet='  • '):
+def format_indentation(string, width, indentation=4, bullet='•'):
     '''Parse and print input indented.'''
     indentation *= ' '
+    bullet = '  ' + bullet + ' '
     lines = list()
     line_length = width - len(indentation)
     num_lines = int(ceil(len(string) / line_length))
@@ -73,20 +84,24 @@ def format_indentation(string, width, indentation=4, bullet='  • '):
     lines[0] = bullet + lines[0][4:]
     return lines
 
-def format_output(input, limit, indentation=4):
+def format_output(input, limit, indentation=4, bullet='•'):
     '''Parse and print input list in a specific manner. Only return limit
     number of definitions.'''
+    data = input[0]
+    names = input[1]
     cols = int(popen('stty size', 'r').read().split()[1])
-    # TODO Retrieve the words from JSON. Reason: currently word -> Word,
-    # regardless of the category; if it is an acronym it should be word ->
-    # WORD.
-    print indentation * ' ' + capitalize(input[0])
-    for category in input[1]:
-        print category[0]
+    if len([item for item in names if item != '']) == 2: 
+        print indentation * ' ' + '  ―  '.join(names)
+    else:
+        print indentation * ' ' + ''.join([only for only in names])
+    # TODO Add examples.
+    for category in data:
+        if category[0] != '':
+            print category[0]
         for definition in category[1][:limit]:
-            for line in format_indentation(untag(definition), cols):
+            for line in format_indentation(untag(definition), cols,
+                                           indentation, bullet):
                 print line
-        # TODO Add examples.
 
 def untag(string):
     '''Remove XML tags from string.'''
@@ -100,6 +115,12 @@ def connected():
     except URLError:
         return False
 
+def bug_report():
+    '''Ask user and open a new issue on github.'''
+    response = raw_input('This may be a bug. Report issue (yes/no)?\n')
+    if response not in ['N', 'NO', 'No', 'n', 'nO', 'no']:
+        open_browser('https://github.com/haukurpallh/def/issues/new')
+
 if __name__ == '__main__':
     parser = ArgumentParser()
     # TODO Fix indentation problems withouth metavar='' and add a long option.
@@ -109,6 +130,8 @@ if __name__ == '__main__':
                         help='specify a target language, e.g. en')
     parser.add_argument('-n', metavar='', type=int, help='specify the number '
                         + 'of definitions to print for each word category')
+    parser.add_argument('-b', metavar='', choices='ndtw', help='specify a '
+                        + 'type of bullet; n: normal, t: triangular, w: white')
     # TODO Add an option to print the definitions for each word in a file.
     parser.add_argument('-q', '--quiet', action='store_true',
                         help='do not print error messages')
@@ -125,13 +148,19 @@ if __name__ == '__main__':
     if args.n == None:
         # Show us 3 definitions of each category by default.
         args.n = 3
+    if args.b == None or args.b == 'n':
+        # Use normal bullets if specified and by default
+        args.b = '•'
+    elif args.b == 'd':
+        args.b = '―'
+    elif args.b == 't':
+        args.b = '‣'
+    elif args.b == 'w':
+        args.b = '◦'
     try:
-        # TODO Make this more readable.
-        format_output([args.query, parse(get_data(args.query, langs[0],
-                       langs[1], args.quiet), args.query, args.quiet)],
-                      args.n)
+        data = parse(get_data(args.query, langs[0], langs[1], args.quiet),
+                     args.query, args.quiet)
+        format_output([data[0], data[1]], args.n, bullet=args.b)
     except KeyboardInterrupt:
-        # Print a newline to start the prompt on an empty line and exit.
-        # TODO Do not print "^C".
         print
         exit(130)
