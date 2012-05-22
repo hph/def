@@ -14,11 +14,10 @@ from urllib2 import urlopen, URLError
 
 def get_data(query, src_lan='en', tgt_lan='en', quiet=False):
     '''Return data in JSON from Google.''' 
-    # TODO This IP might not be static - add more IPs in case of errors.
     base_url = 'http://173.194.35.144/dictionary/json?callback=c&'
     options = urlencode({'q': query, 'sl': src_lan, 'tl': tgt_lan})
     try:
-        return urlopen(base_url + options).read().decode('utf8')
+        return urlopen(base_url + options).read().decode('utf8')[2:-10]
     except URLError:
         if not quiet: 
             print 'Error - could not connect to Google.com'
@@ -33,7 +32,7 @@ def parse(data, query, quiet=False):
     '''Return a dictionary containing definitions and their categories parsed
     from data in JSON.'''
     try:
-        dicts = literal_eval(data[2:-10])['primaries']
+        dicts = literal_eval(data)['primaries']
         categories = []
         definitions = []
         for i, _ in enumerate(dicts):
@@ -52,8 +51,8 @@ def parse(data, query, quiet=False):
         exit(1)
     return zip(categories, definitions)
 
-def format(string, width, indentation=4, bullet='  • '):
-    '''Parse string and adjust indentation.'''
+def format_indentation(string, width, indentation=4, bullet='  • '):
+    '''Parse and print input indented.'''
     indentation *= ' '
     lines = list()
     line_length = width - len(indentation)
@@ -85,7 +84,7 @@ def format_output(input, limit, indentation=4):
     for category in input[1]:
         print category[0]
         for definition in category[1][:limit]:
-            for line in format(untag(definition), cols):
+            for line in format_indentation(untag(definition), cols):
                 print line
         # TODO Add examples.
 
