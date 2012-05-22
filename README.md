@@ -33,9 +33,10 @@ Open a terminal and type `def word`. It should print the following:
       • Used to express agreement.
 
 ### More "advanced" features
-For a full list of features type `def -h`. The `-n` option allows you to
-specify the number of definitions (for each category) that you want to print.
-For example, `def -n=1 horse` will give you:
+For a full list of features type `def -h`.
+
+The `-n` option allows you to specify the number of definitions (for each
+category) that you want to print. For example, `def -n=1 horse` will give you:
 
         horse  ―  /hôrs/
     Noun
@@ -58,10 +59,12 @@ On the other hand, `def -n=5 horse` will print:
     Verb
       • Provide (a person or vehicle) with a horse or horses
 
-The `-b` option allows you to specify the type of bullet you want. The default,
-as seen above, is `•`.
+The `-b` option allows you to specify which bullet type you want. The default,
+as seen above, is `•`. `d` stands for `dash`:
 
-    $ def -b=d music
+    def -b=d music
+
+Which will print:
 
         mu·sic  ―  /ˈmyo͞ozik/
     Noun
@@ -70,7 +73,11 @@ as seen above, is `•`.
       ― The vocal or instrumental sound produced in this way
       ― A sound perceived as pleasingly harmonious
 
-    $ def -b=t music
+For a triangular bullet, use `t` (triangle):
+
+    def -b=t music
+
+Which prints:
 
         mu·sic  ―  /ˈmyo͞ozik/
     Noun
@@ -79,14 +86,18 @@ as seen above, is `•`.
       ‣ The vocal or instrumental sound produced in this way
       ‣ A sound perceived as pleasingly harmonious
 
-    $ def -b=w music
+And finally, for an empty bullet, use `w` (white).
+
+    def -b=w music
+
+Which prints:
 
         mu·sic  ―  /ˈmyo͞ozik/
     Noun
-      ‣ The art or science of combining vocal or instrumental sounds (or both)
+      ◦ The art or science of combining vocal or instrumental sounds (or both)
         to produce beauty of form, harmony, and expression of emotion
-      ‣ The vocal or instrumental sound produced in this way
-      ‣ A sound perceived as pleasingly harmonious
+      ◦ The vocal or instrumental sound produced in this way
+      ◦ A sound perceived as pleasingly harmonious
 
 There may be times when you want to save the output of the program in a file.
 On Linux and Mac you can do that by typing `def word > file.txt`. This saves
