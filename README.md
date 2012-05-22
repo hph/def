@@ -2,6 +2,7 @@ def
 ===
 A dictionary with a command-line interface using Google Dictionary's
 (unofficial) definitions in JSON.
+
 See [Usage examples](https://github.com/haukurpallh/def#usage-examples) for an
 overview of the features.
 
@@ -148,4 +149,5 @@ Future features
 
 Notes
 -----
-Don't hesitate to report bugs at: https://github.com/haukurpallh/def/issues
+Don't hesitate to report bugs at the
+[Issues page](https://github.com/haukurpallh/def/issues).
