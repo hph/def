@@ -1,7 +1,10 @@
 def
 ===
 A dictionary with a command-line interface using Google Dictionary's
-(unofficial) definitions in JSON.
+(unofficial) definitions in JSON. See
+[Usage examples](https://github.com/haukurpallh/def#usage-examples) for an
+overview of the features.
+![Screenshot](http://i.imgur.com/0MJjr.png)
 
 Setup
 -----
