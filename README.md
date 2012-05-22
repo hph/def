@@ -108,7 +108,7 @@ messages saved. That's what the `-q` or `--quiet` option is for.
 If you dislike the default behaviour you don't need to type all the options.
 Simply create an alias in your `.bashrc` (located in your home folder). For
 example, if you'd like def to print five definitions for each category instead
-of the default of 3, you could add the following line to your `.bashrc`:
+of the default of three, you could add the following line to your `.bashrc`:
 
     alias def='def n=5'
 
@@ -128,4 +128,20 @@ And now, if you type `def word` it prints:
       • Choose and use particular words in order to say or write (something)
     Exclamation
       • Used to express agreement
-    
+
+Future features
+---------------
+- Multiple language support
+- Option to parse a file and create a file with all the definitions
+- Option to get more than one definition at a time
+- Option to get only one definition from one category or only definitions from
+  one category
+- Usage example beneath definitions
+- Installer and updater
+- Man page (so that a readme is available via `man def`)
+- Web definitions or other sources for words that can't be found
+- Any suggestions are welcome
+
+Notes
+-----
+Don't hesitate to report bugs at: https://github.com/haukurpallh/def/issues
