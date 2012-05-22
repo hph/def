@@ -32,7 +32,7 @@ Open a terminal and type `def word`. It should print the following:
     Exclamation
       • Used to express agreement.
 
-### More "advanced" features
+### Slightly more advanced features
 For a full list of features type `def -h`.
 
 The `-n` option allows you to specify the number of definitions (for each
@@ -105,3 +105,27 @@ the output of `def word` in `file.txt` in the current folder. However, it would
 be better to do `def -q word > file.txt` since you probably wouldn't want error
 messages saved. That's what the `-q` or `--quiet` option is for.
 
+If you dislike the default behaviour you don't need to type all the options.
+Simply create an alias in your `.bashrc` (located in your home folder). For
+example, if you'd like def to print five definitions for each category instead
+of the default of 3, you could add the following line to your `.bashrc`:
+
+    alias def='def n=5'
+
+And now, if you type `def word` it prints:
+
+        word  ―  /wərd/
+    Noun
+      • A single distinct meaningful element of speech or writing, used with
+        others (or sometimes alone) to form a sentence and typically shown with
+        a space on either side when written or printed
+      • A single distinct conceptual unit of language, comprising inflected and
+        variant forms
+      • Something that someone says or writes; a remark or piece of information
+      • Speech as distinct from action
+      • Even the smallest amount of something spoken or written
+    Verb
+      • Choose and use particular words in order to say or write (something)
+    Exclamation
+      • Used to express agreement
+    
