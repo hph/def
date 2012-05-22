@@ -150,4 +150,4 @@ Future features
 Notes
 -----
 Don't hesitate to report bugs at the
-[Issues page](https://github.com/haukurpallh/def/issues).
+[issues page](https://github.com/haukurpallh/def/issues).
