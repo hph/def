@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#coding: utf8
+#coding=utf8
 
 from __future__ import division
 from argparse import ArgumentParser
