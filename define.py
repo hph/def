@@ -27,7 +27,7 @@ def get_data(query, src_lan='en', tgt_lan='en', quiet=False):
                 print 'You appear to be connected to the internet.'
             else:
                 print 'You appear to be disconnected from the internet.'
-            bug_report()
+            #bug_report()
         exit(1)
 
 def parse(data, query, quiet=False):
@@ -57,7 +57,7 @@ def parse(data, query, quiet=False):
     except KeyError:
         if not quiet:
             print 'No definition found for "%s".' % query
-            bug_report()    
+            #bug_report()    
         exit(1)
     return zip(categories, definitions), names
 
@@ -118,20 +118,21 @@ def connected():
 def bug_report():
     '''Ask user and open a new issue on github.'''
     response = raw_input('This may be a bug. Report issue (yes/no)?\n')
-    if response not in ['Y', 'YES', 'Yes', 'y', 'yes']:
+    if response in ['Y', 'YES', 'Yes', 'y', 'yes']:
         open_browser('https://github.com/haukurpallh/def/issues/new')
 
 if __name__ == '__main__':
     parser = ArgumentParser()
     # TODO Fix indentation problems withouth metavar='' and add a long option.
     parser.add_argument('-sl', metavar='', action='append',
-                        help='specify a source language, e.g. en')
+                        help='specify a source language, only "en" supported')
     parser.add_argument('-tl', metavar='', action='append',
-                        help='specify a target language, e.g. en')
+                        help='specify a target language, only "en" supported')
     parser.add_argument('-n', metavar='', type=int, help='specify the number '
                         + 'of definitions to print for each word category')
     parser.add_argument('-b', metavar='', choices='ndtw', help='specify a '
-                        + 'type of bullet; n: normal, t: triangular, w: white')
+                        + 'type of bullet; n: normal, d: dash, t: triangular '
+                        + 'and w: white')
     # TODO Add an option to print the definitions for each word in a file.
     parser.add_argument('-q', '--quiet', action='store_true',
                         help='do not print error messages')
