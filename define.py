@@ -118,7 +118,7 @@ def connected():
 def bug_report():
     '''Ask user and open a new issue on github.'''
     response = raw_input('This may be a bug. Report issue (yes/no)?\n')
-    if response not in ['N', 'NO', 'No', 'n', 'nO', 'no']:
+    if response not in ['Y', 'YES', 'Yes', 'y', 'yes']:
         open_browser('https://github.com/haukurpallh/def/issues/new')
 
 if __name__ == '__main__':
