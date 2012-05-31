@@ -13,14 +13,15 @@ from urllib import urlencode
 from urllib2 import urlopen, URLError
 from webbrowser import open as open_browser
 
+
 def get_data(query, src_lan='en', tgt_lan='en', quiet=False):
-    '''Return data in JSON from Google.''' 
+    '''Return data in JSON from Google.'''
     base_url = 'http://173.194.35.144/dictionary/json?callback=c&'
     options = urlencode({'q': query, 'sl': src_lan, 'tl': tgt_lan})
     try:
         return urlopen(base_url + options).read().decode('utf8')[2:-10]
     except URLError:
-        if not quiet: 
+        if not quiet:
             print 'Error - could not connect to Google.com'
             print 'Checking internet connectivity.'
             if connected():
@@ -29,6 +30,7 @@ def get_data(query, src_lan='en', tgt_lan='en', quiet=False):
                 print 'You appear to be disconnected from the internet.'
             #bug_report()
         exit(1)
+
 
 def parse(data, query, quiet=False):
     '''Return a dictionary containing definitions and their categories parsed
@@ -41,7 +43,8 @@ def parse(data, query, quiet=False):
         syllables = ''
         phonetic = ''
         for i, _ in enumerate(dicts):
-            if dicts[i]['terms'][0].has_key('labels'):
+            #if dicts[i]['terms'][0].has_key('labels'):
+            if 'labels' in dicts[i]['terms'][0]:
                 category = dicts[i]['terms'][0]['labels'][0]['text']
             categories.append(category)
             syllables = dicts[i]['terms'][0]['text']
@@ -57,9 +60,10 @@ def parse(data, query, quiet=False):
     except KeyError:
         if not quiet:
             print 'No definition found for "%s".' % query
-            #bug_report()    
+            #bug_report()
         exit(1)
     return zip(categories, definitions), names
+
 
 def format_indentation(string, width, indentation=4, bullet='•'):
     '''Parse and print input indented.'''
@@ -70,7 +74,7 @@ def format_indentation(string, width, indentation=4, bullet='•'):
     num_lines = int(ceil(len(string) / line_length))
     words = string.split()
     line = words[0]
-    index = 0 
+    index = 0
     for i in xrange(num_lines):
         for j, word in enumerate(words[(index + 1):], index + 1):
             temp_line = line
@@ -84,13 +88,14 @@ def format_indentation(string, width, indentation=4, bullet='•'):
     lines[0] = bullet + lines[0][4:]
     return lines
 
+
 def format_output(input, limit, indentation=4, bullet='•'):
     '''Parse and print input list in a specific manner. Only return limit
     number of definitions.'''
     data = input[0]
     names = input[1]
     cols = int(popen('stty size', 'r').read().split()[1])
-    if len([item for item in names if item != '']) == 2: 
+    if len([item for item in names if item != '']) == 2:
         print indentation * ' ' + '  ―  '.join(names)
     else:
         print indentation * ' ' + ''.join([only for only in names])
@@ -103,9 +108,11 @@ def format_output(input, limit, indentation=4, bullet='•'):
                                            indentation, bullet):
                 print line
 
+
 def untag(string):
     '''Remove XML tags from string.'''
     return sub('<[^<]+?>', '', string).strip()
+
 
 def connected():
     '''Return True if connected to the internet, otherwise return False.'''
@@ -115,11 +122,13 @@ def connected():
     except URLError:
         return False
 
+
 def bug_report():
     '''Ask user and open a new issue on github.'''
     response = raw_input('This may be a bug. Report issue (yes/no)?\n')
     if response in ['Y', 'YES', 'Yes', 'y', 'yes']:
         open_browser('https://github.com/haukurpallh/def/issues/new')
+
 
 if __name__ == '__main__':
     parser = ArgumentParser()

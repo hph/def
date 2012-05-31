@@ -145,7 +145,7 @@ Future features
 - Installer and updater
 - Man page (so that a readme is available via `man def`)
 - Web definitions or other sources for words that can't be found
-- Any suggestions are welcome
+- Suggestions are welcome
 
 Notes
 -----
