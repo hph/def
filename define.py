@@ -4,6 +4,7 @@
 from __future__ import division
 from argparse import ArgumentParser
 from ast import literal_eval
+from difflib import get_close_matches
 from math import ceil
 from os import popen
 from re import sub
@@ -28,7 +29,6 @@ def get_data(query, src_lan='en', tgt_lan='en', quiet=False):
                 print 'You appear to be connected to the internet.'
             else:
                 print 'You appear to be disconnected from the internet.'
-            #bug_report()
         exit(1)
 
 
@@ -43,7 +43,6 @@ def parse(data, query, quiet=False):
         syllables = ''
         phonetic = ''
         for i, _ in enumerate(dicts):
-            #if dicts[i]['terms'][0].has_key('labels'):
             if 'labels' in dicts[i]['terms'][0]:
                 category = dicts[i]['terms'][0]['labels'][0]['text']
             categories.append(category)
@@ -59,9 +58,8 @@ def parse(data, query, quiet=False):
         names = syllables, phonetic
     except KeyError:
         if not quiet:
-            print 'No definition found for "%s".' % query
-            #bug_report()
-        exit(1)
+            print 'No definition found for "%s"' % query
+            return False
     return zip(categories, definitions), names
 
 
@@ -170,7 +168,18 @@ if __name__ == '__main__':
     try:
         data = parse(get_data(args.query, langs[0], langs[1], args.quiet),
                      args.query, args.quiet)
-        format_output([data[0], data[1]], args.n, bullet=args.b)
+        if not data:
+            words = [line[:-1] for line in open('/usr/share/dict/words')]
+            match = get_close_matches(args.query, words)[0]
+            if match:
+                print 'Seeking definition for close match: "%s"' % match
+                data = parse(get_data(match, langs[0], langs[1], args.quiet),
+                             args.query, args.quiet)
+            else:
+                print 'No match found for %s.' % args.query
+                sys.exit(1)
+        data:
+            format_output([data[0], data[1]], args.n, bullet=args.b)
     except KeyboardInterrupt:
         print
         exit(130)
