@@ -178,7 +178,7 @@ if __name__ == '__main__':
             else:
                 print 'No match found for %s.' % args.query
                 sys.exit(1)
-        data:
+        if data:
             format_output([data[0], data[1]], args.n, bullet=args.b)
     except KeyboardInterrupt:
         print
