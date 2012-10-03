@@ -2,7 +2,7 @@
 #coding=utf8
 
 from __future__ import division
-from argparse import ArgumentParser
+from argparse import ArgumentParser, HelpFormatter
 from ast import literal_eval
 from difflib import get_close_matches
 from math import ceil
@@ -128,24 +128,36 @@ def bug_report():
         open_browser('https://github.com/haukurpallh/def/issues/new')
 
 
-if __name__ == '__main__':
-    parser = ArgumentParser()
+def process_args():
+    form = lambda prog: HelpFormatter(prog, max_help_position=30)
+    parser = ArgumentParser(prog='def',
+                            formatter_class=form,
+                            description='''def - look up word definitions via
+                            Google's unofficial API''')
     # TODO Fix indentation problems withouth metavar='' and add a long option.
-    parser.add_argument('-sl', metavar='', action='append',
-                        help='specify a source language, only "en" supported')
-    parser.add_argument('-tl', metavar='', action='append',
-                        help='specify a target language, only "en" supported')
-    parser.add_argument('-n', metavar='', type=int, help='specify the number '
-                        + 'of definitions to print for each word category')
-    parser.add_argument('-b', metavar='', choices='ndtw', help='specify a '
-                        + 'type of bullet; n: normal, d: dash, t: triangular '
-                        + 'and w: white')
+    parser.add_argument('-sl', action='append',
+                        help='''specify a source language, only "en"
+                        supported''')
+    parser.add_argument('-tl', action='append',
+                        help='''specify a target language, only "en"
+                        supported''')
+    parser.add_argument('-n', type=int,
+                        help='''specify the number of definitions to print for
+                        each word category''')
+    parser.add_argument('-b', choices='ndtw',
+                        help='''specify a type of bullet; n: normal, d: dash,
+                        t: triangular and w: white''')
     # TODO Add an option to print the definitions for each word in a file.
     parser.add_argument('-q', '--quiet', action='store_true',
-                        help='do not print error messages')
-    parser.add_argument('query', help='look up the meaning of the word or '
-                        + 'concept; requires quotes if longer than one word')
-    args = parser.parse_args()
+                        help='''do not print error messages''')
+    parser.add_argument('query',
+                        help='''look up the meaning of the word or concept;
+                        requires quotes if more than one word''')
+    return parser.parse_args()
+
+
+if __name__ == '__main__':
+    args = process_args()
     # TODO Only English seems to work at the moment - check later. Remove
     # language options if not relevant.
     langs = ['en', 'en']
